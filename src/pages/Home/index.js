@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
-import ajax from '../../utils/ajax';
+import ajax from 'utils/ajax';
+import { ACCESS_TOKEN } from '../../constants';
 
 const Home = () => {
   useEffect(() => {
-    ajax.get("http://mock.don.red/weibo/2/statuses/public_timeline.json", { params: { access_token: 'token' }})
+    ajax.get("https://mock.don.red/weibo/2/statuses/public_timeline.json", { params: { access_token: ACCESS_TOKEN } })
   }, []);
 
   return (

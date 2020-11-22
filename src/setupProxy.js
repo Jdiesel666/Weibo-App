@@ -1,11 +1,11 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
-module.exports = function(app) {
+module.exports = function (app) {
   app.use(
     '/proxy',
     createProxyMiddleware({
-      target: 'http://mock.don.red/weibo',
-      pathRewrite: {'/proxy': '/'},
+      target: 'https://mock.don.red/weibo',
+      pathRewrite: { '/proxy': '/' },
       changeOrigin: true
     })
   )

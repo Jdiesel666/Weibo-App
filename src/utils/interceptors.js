@@ -1,4 +1,4 @@
-import { ACCESS_TOKEN } from '../constants/index';
+import { ACCESS_TOKEN } from '../constants';
 
 const responseInterceptors = [
   {
