@@ -36,7 +36,6 @@ const New = ({ match }) => {
             onClick={handleClick}
           >
             {id ? '评论' : '发送'}
-
           </a>
         </Row>
       </Affix>

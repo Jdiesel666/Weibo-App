@@ -11,7 +11,7 @@ export function createComment(params = {}, isFirst) {
           window.location.href = '/';
         }
       }
-    }catch (e) {
+    } catch (e) {
       message.error(e.message || '评论失败!');
     }
   }

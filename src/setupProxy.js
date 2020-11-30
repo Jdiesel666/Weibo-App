@@ -1,11 +1,5 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
-function onProxyReq(proxyReq, req, res) {
-  if (req.url.indexOf('/2/comments/create.json')) {
-    proxyReq.setHeader('content-type', 'application/x-www-form-urlencoded');
-  }
-}
-
 module.exports = function (app) {
   app.use(
     '/proxy',
@@ -13,7 +7,6 @@ module.exports = function (app) {
       target: 'https://mock.don.red/weibo',
       pathRewrite: { '/proxy': '/' },
       changeOrigin: true,
-      onProxyReq,
     })
   )
 }
