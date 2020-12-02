@@ -6,3 +6,10 @@ export function createComment(params) {
     headers: {'content-type': 'application/x-www-form-urlencoded'}
   });
 }
+
+
+export function getComments(params) {
+  return ajax.get('/proxy/2/comments/show.json', {
+    params,
+  });
+}

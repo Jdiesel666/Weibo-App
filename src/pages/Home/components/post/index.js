@@ -2,6 +2,8 @@ import React from 'react';
 import { Card } from 'antd';
 import { RetweetOutlined, LikeOutlined, MessageOutlined } from '@ant-design/icons';
 import moment from 'moment';
+import { useDispatch } from 'redux-react-hook';
+import { setCurrentPost } from 'actions/timeline';
 import styles from './index.module.scss';
 
 const getPotstTitle = (
@@ -35,11 +37,15 @@ const Post = ({
   attitudes_count,
   comments_count,
   retweeted_status,
-  type
+  type,
+  isCurrent,
 }) => {
+  const dispatch = useDispatch();
   const handleClickComment = () => {
     if (!comments_count) {
       window.location.href = `/comments/${id}`;
+    } else {
+      dispatch(setCurrentPost({ id: isCurrent ? null : id }));
     }
   }
 
@@ -59,15 +65,15 @@ const Post = ({
       actions={type ? [] : [
         <div>
           <RetweetOutlined key="retweet" />
-          <span>{reposts_count || ''}</span>
+          <span> {reposts_count || ''}</span>
         </div>,
         <div>
           <LikeOutlined key="like" />
-          <span>{attitudes_count || ''}</span>
+          <span> {attitudes_count || ''}</span>
         </div>,
         <div onClick={handleClickComment}>
           <MessageOutlined key="message" />
-          <span>{comments_count || ''}</span>
+          <span> {comments_count || ''}</span>
         </div>
       ]}
     >

@@ -7,13 +7,14 @@ import { Link } from 'react-router-dom';
 import { getHomeTimeline } from '../../actions/timeline';
 import { LOGIN_URL } from '../../constants';
 import Post from './components/post';
+import CommentsList from './components/commentsList';
 import styles from './index.module.scss';
 
 const mapStateTimeline = state => state.timeline;
 
 const Home = () => {
   const dispatch = useDispatch();
-  const { home: { posts = [], page } = {}} = useMappedState(mapStateTimeline);
+  const { home: { posts = [], page } = {}, current } = useMappedState(mapStateTimeline);
 
   const handleInfiniteOnLoad = () => {
     dispatch(getHomeTimeline({ page: page + 1 }));
@@ -43,11 +44,18 @@ const Home = () => {
             id,
             ...rest
           }) => (
-            <Post 
-              key={id}
-              id={id}
-              {...rest}
-            />
+            <>
+              <Post 
+                key={id}
+                id={id}
+                isCurrent={current === id}
+                {...rest}
+              />
+              {
+                current === id &&
+                <CommentsList id={current} />
+              }
+            </>
           ))
         }
       </InfiniteScroll>

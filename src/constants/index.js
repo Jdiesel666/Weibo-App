@@ -9,3 +9,5 @@ export const LOGIN_URL = `https://mock.don.red/weibo/oauth2/authorize?client_id=
 export const getAccessCode = (code) => 
 `/proxy/oauth2/access_token?client_id=${APP_KEY}&cleint_secret=${APP_SECRET}
 &client_type=authorization_code&direct_uri=${REDIRECT_URI}&code=${code}`;
+
+export const COMMENT_PAGESIZE = 5;
