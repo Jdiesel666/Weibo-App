@@ -1,4 +1,4 @@
-import { GET_COMMENTS, RESET_COMMENTS } from "../constants/actions";
+import { GET_COMMENTS, RESET_COMMENTS, ADD_COMMENT, REMOVE_COMMENT } from "../constants/actions";
 
 const initState = {
   comments: [],
@@ -16,6 +16,16 @@ export default function reducer(state = initState, action) {
       }
     case RESET_COMMENTS:
       return initState;
+    case ADD_COMMENT:
+      return {
+        ...state,
+        comments: [action.payload, ...state.comments],
+      };
+    case REMOVE_COMMENT:
+      return {
+        ...state,
+        comments: state.comments.filter(({ id }) => id !== action.payload),
+      }
     default:
       return state;
   }

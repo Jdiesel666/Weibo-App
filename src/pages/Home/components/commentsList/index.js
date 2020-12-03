@@ -1,15 +1,19 @@
-import React, { useEffect, useCallback } from 'react';
-import { List, Avatar, Card, Button } from 'antd';
+import React, { useState, useEffect, useCallback } from 'react';
+import { List, Avatar, Card, Button, Col, Row, Input, Modal } from 'antd';
 import { useDispatch, useMappedState } from 'redux-react-hook';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import moment from 'moment';
-import { getComments } from 'actions/comments';
-import { COMMENT_PAGESIZE } from 'constants/index';
+import { getComments, createComment, deleteComment } from 'actions/comments';
+import { COMMENT_PAGESIZE, getUid } from 'constants/index';
 import styles from './index.module.scss';
 
 const mapStateComments = state => state.comments;
+const uid = getUid();
+const { confirm } = Modal;
 
 const CommentsList = ({ id }) => {
   const dispatch = useDispatch();
+  const [value, setValue] = useState('');
   const { comments = [], page = 0, total } = useMappedState(mapStateComments);
 
   const handleInfiniteOnLoad = useCallback(() => {
@@ -26,14 +30,54 @@ const CommentsList = ({ id }) => {
     </div>
   );
 
+  const handleSendComment = () => {
+    let param = new URLSearchParams();
+    param.append('id', id);
+    param.append('comment', value);
+    setValue('');
+    dispatch(createComment(param, false));
+  }
+
+  const handleDeleteComment = (e, id) => {
+    e.preventDefault();
+    let param = new URLSearchParams();
+    param.append('cid', id);
+    confirm({
+      title: "警告",
+      icon: <ExclamationCircleOutlined />,
+      content: '确定删除这条评论吗？',
+      onOk() {
+        dispatch(deleteComment(param));
+      }
+    })
+  }
+
   return (
-    <Card>
+    <Card className={styles.commentsList}>
+      <Row>
+        <Col span={20}>
+          <Input value={value} onChange={(e) => setValue(e.target.value)} />
+        </Col>
+        <Col span={4}>
+          <Button
+            onClick={handleSendComment}
+            type="primary"
+          >
+            评论
+          </Button>
+        </Col>
+      </Row>
       <List
-        className={styles.commentsList}
         loadMore={loadMore}
         dataSource={comments}
         renderItem={({ user = {}, id, text, created_at }) => (
-          <List.Item key={id}>
+          <List.Item
+            key={id}
+            actions={
+              uid === user.idstr ?
+              [<a href="#!" onClick={(e) => handleDeleteComment(e, id)}>删除</a>] : []
+            }
+          >
             <List.Item.Meta
               avatar={
                 <Avatar src={user.avatar_hd} />

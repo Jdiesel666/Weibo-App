@@ -13,3 +13,10 @@ export function getComments(params) {
     params,
   });
 }
+
+export function deleteComment(params) {
+  return ajax.post('/proxy/2/comments/destroy.json', {
+    data: params,
+    headers: {'content-type': 'application/x-www-form-urlencoded'}
+  });
+}
